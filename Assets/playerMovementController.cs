@@ -33,7 +33,7 @@ if (move != Vector3.zero)
 }
 else if (controller.isGrounded)
 {
-    // Find way to stop player character from rotating when stopped.
+    playerVelocity = Vector3.zero;
 }
 
 

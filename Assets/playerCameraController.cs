@@ -11,9 +11,9 @@ public class PlayerCameraController : MonoBehaviour
     public float minFOV = 30.0f;
     public float maxFOV = 60.0f;
     public string playerTag = "Player";
-    public float smoothing = 5.0f; // Smoothing factor for camera movement and rotation
-    public float verticalLimit = 80.0f; // Limit for vertical rotation
-    public KeyCode resetKey = KeyCode.R; // Key to reset camera
+    public float smoothing = 5.0f;
+    public float verticalLimit = 80.0f;
+    public KeyCode resetKey = KeyCode.R;
 
     private CinemachineFreeLook freeLookCamera;
     private Transform followTarget;
@@ -38,6 +38,10 @@ public class PlayerCameraController : MonoBehaviour
         {
             Debug.LogWarning("Player object not found with tag: " + playerTag);
         }
+
+        // Lock the cursor and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void LateUpdate()
@@ -71,8 +75,8 @@ public class PlayerCameraController : MonoBehaviour
         // Reset camera position with a key press
         if (Input.GetKeyDown(resetKey))
         {
-            freeLookCamera.m_XAxis.Value = 0.5f; // Reset horizontal rotation
-            freeLookCamera.m_YAxis.Value = 0.5f; // Reset vertical rotation
+            freeLookCamera.m_XAxis.Value = 0.5f;
+            freeLookCamera.m_YAxis.Value = 0.5f;
         }
 
         // Update camera position to maintain offset

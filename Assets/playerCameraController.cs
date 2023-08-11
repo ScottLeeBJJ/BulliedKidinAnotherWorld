@@ -63,7 +63,7 @@ public class PlayerCameraController : MonoBehaviour
             freeLookCamera.m_YAxis.Value -= mouseY * verticalSensitivity * Time.deltaTime * smoothing;
 
             // Invert the horizontal rotation
-            freeLookCamera.m_XAxis.Value -= mouseX * sensitivity * Time.deltaTime * smoothing;
+            freeLookCamera.m_XAxis.Value += mouseX * sensitivity * Time.deltaTime * smoothing;
         }
 
         // Zoom using mouse scroll wheel input
@@ -82,4 +82,3 @@ public class PlayerCameraController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * smoothing);
     }
 }
-

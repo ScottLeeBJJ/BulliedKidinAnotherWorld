@@ -59,8 +59,8 @@ public class PlayerCameraController : MonoBehaviour
 
         if (mouseLookEnabled)
         {
-            // Invert the horizontal rotation
-            freeLookCamera.m_XAxis.Value -= mouseX * sensitivity * Time.deltaTime * smoothing;
+            // Smoothly rotate the camera horizontally
+            freeLookCamera.m_XAxis.Value += mouseX * sensitivity * Time.deltaTime * smoothing;
 
             // Smoothly rotate the camera vertically and apply limits
             float verticalInput = mouseY * verticalSensitivity * Time.deltaTime * smoothing;

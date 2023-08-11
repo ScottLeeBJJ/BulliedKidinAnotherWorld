@@ -6,26 +6,24 @@ using Cinemachine;
 public class PlayerCameraController : MonoBehaviour
 {
     public float sensitivity = 2.0f;
-    public float verticalSensitivity = 2.0f; // Adjust this value for vertical rotation
-    public string playerTag = "Player"; // Tag of the player object
+    public float verticalSensitivity = 2.0f;
+    public float zoomSpeed = 5.0f; // Adjust this value for zoom speed
+    public float minFOV = 30.0f;  // Minimum field of view
+    public float maxFOV = 60.0f;  // Maximum field of view
+    public string playerTag = "Player";
 
     private CinemachineFreeLook freeLookCamera;
     private Transform followTarget;
 
     private void Start()
     {
-        // Get the CinemachineFreeLook component of the virtual camera
         freeLookCamera = GetComponent<CinemachineFreeLook>();
 
-        // Find the player object by tag
         GameObject playerObject = GameObject.FindGameObjectWithTag(playerTag);
         if (playerObject != null)
         {
-            // Set the player object's transform as the follow target
             followTarget = playerObject.transform;
             freeLookCamera.Follow = followTarget;
-
-            // Set the Look At target to the player object's transform
             freeLookCamera.LookAt = followTarget;
         }
         else
@@ -36,14 +34,16 @@ public class PlayerCameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Get mouse input for camera rotation
         float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y"); // Get vertical mouse input
+        float mouseY = Input.GetAxis("Mouse Y");
 
-        // Rotate the camera horizontally based on mouse input
         freeLookCamera.m_XAxis.Value += mouseX * sensitivity;
 
-        // Adjust the vertical rotation based on inverted sensitivity
-        freeLookCamera.m_YAxis.Value += mouseY * verticalSensitivity;
+        float verticalInput = Input.GetAxis("Vertical");
+        freeLookCamera.m_YAxis.Value += verticalInput * verticalSensitivity;
+
+        // Zoom using mouse scroll wheel input
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        freeLookCamera.m_Lens.FieldOfView = Mathf.Clamp(freeLookCamera.m_Lens.FieldOfView - scrollInput * zoomSpeed, minFOV, maxFOV);
     }
 }

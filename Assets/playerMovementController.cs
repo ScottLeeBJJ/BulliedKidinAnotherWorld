@@ -24,6 +24,10 @@ public class PlayerMovementController : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
+        // Debug logs to check jump input and grounded status
+        Debug.Log("Grounded: " + groundedPlayer);
+        Debug.Log("Jump Input: " + Input.GetButtonDown("Jump"));
+
         // Get the forward and right vectors of the camera
         Vector3 forward = Camera.main.transform.forward;
         Vector3 right = Camera.main.transform.right;
@@ -38,10 +42,10 @@ public class PlayerMovementController : MonoBehaviour
         // Move the player using the calculated movement direction
         controller.Move(moveDirection * Time.deltaTime * playerSpeed);
 
-        // Apply jump mechanics
+        // Adjust the jump mechanic
         if (Input.GetButtonDown("Jump") && groundedPlayer)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
         }
 
         // Apply gravity and move player

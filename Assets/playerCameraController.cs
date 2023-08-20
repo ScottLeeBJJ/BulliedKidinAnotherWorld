@@ -7,8 +7,8 @@ public class PlayerCameraController : MonoBehaviour
 {
     public float sensitivity = 2.0f;
     public float verticalSensitivity = 2.0f;
-    public float zoomSpeed = 5.0f;
-    public float minFOV = 30.0f;
+    public float zoomSpeed = 10.0f;
+    public float minFOV = 20.0f;
     public float maxFOV = 60.0f;
     public string playerTag = "Player";
     public float smoothing = 5.0f;

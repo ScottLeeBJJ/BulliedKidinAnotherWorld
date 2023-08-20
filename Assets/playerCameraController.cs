@@ -19,9 +19,17 @@ public class PlayerCameraController : MonoBehaviour
     private Transform followTarget;
     private Vector3 offset;
 
-    private bool mouseLookEnabled = true;
+    private bool isMouseLookEnabled = true;
+
+    private const float DefaultXRotation = 0.5f;
+    private const float DefaultYRotation = 0.5f;
 
     private void Start()
+    {
+        InitializeCamera();
+    }
+
+    private void InitializeCamera()
     {
         freeLookCamera = GetComponent<CinemachineFreeLook>();
 
@@ -39,45 +47,62 @@ public class PlayerCameraController : MonoBehaviour
             Debug.LogWarning("Player object not found with tag: " + playerTag);
         }
 
-        // Lock the cursor and hide it
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        LockAndHideCursor();
+    }
+
+    private void LockAndHideCursor()
+    {
+        Cursor.lockState = isMouseLookEnabled ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !isMouseLookEnabled;
     }
 
     private void LateUpdate()
     {
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
+        HandleMouseLook();
+        HandleZoom();
+        HandleReset();
+        UpdateCameraPosition();
+    }
 
-        // Toggle mouse look
+    private void HandleMouseLook()
+    {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            mouseLookEnabled = !mouseLookEnabled;
-            Cursor.lockState = mouseLookEnabled ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !mouseLookEnabled;
+            isMouseLookEnabled = !isMouseLookEnabled;
+            LockAndHideCursor();
         }
 
-        if (mouseLookEnabled)
+        if (isMouseLookEnabled)
         {
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+
             // Invert the vertical rotation
             freeLookCamera.m_YAxis.Value -= mouseY * verticalSensitivity * Time.deltaTime * smoothing;
 
             // Invert the horizontal rotation
             freeLookCamera.m_XAxis.Value += mouseX * sensitivity * Time.deltaTime * smoothing;
         }
+    }
 
-        // Zoom using mouse scroll wheel input
+    private void HandleZoom()
+    {
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        freeLookCamera.m_Lens.FieldOfView = Mathf.Clamp(freeLookCamera.m_Lens.FieldOfView - scrollInput * zoomSpeed, minFOV, maxFOV);
+        freeLookCamera.m_Lens.FieldOfView = Mathf.Clamp(
+            freeLookCamera.m_Lens.FieldOfView - scrollInput * zoomSpeed, minFOV, maxFOV);
+    }
 
-        // Reset camera position with a key press
+    private void HandleReset()
+    {
         if (Input.GetKeyDown(resetKey))
         {
-            freeLookCamera.m_XAxis.Value = 0.5f;
-            freeLookCamera.m_YAxis.Value = 0.5f;
+            freeLookCamera.m_XAxis.Value = DefaultXRotation;
+            freeLookCamera.m_YAxis.Value = DefaultYRotation;
         }
+    }
 
-        // Update camera position to maintain offset
+    private void UpdateCameraPosition()
+    {
         Vector3 desiredPosition = followTarget.position + offset;
         transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * smoothing);
     }

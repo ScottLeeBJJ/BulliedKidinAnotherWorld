@@ -7,14 +7,13 @@ public class PlayerCameraController : MonoBehaviour
 {
     public float sensitivity = 2.0f;
     public float verticalSensitivity = 2.0f;
-    public float zoomSpeed = 10.0f;
-    public float minFOV = 20.0f;
+    public float zoomSpeed = 5.0f;
+    public float minFOV = 30.0f;
     public float maxFOV = 60.0f;
     public string playerTag = "Player";
     public float smoothing = 5.0f;
     public float verticalLimit = 80.0f;
     public KeyCode resetKey = KeyCode.R;
-    public float cameraHeight = 3.0f;
 
     private CinemachineFreeLook freeLookCamera;
     private Transform followTarget;
@@ -41,9 +40,7 @@ public class PlayerCameraController : MonoBehaviour
             freeLookCamera.Follow = followTarget;
             freeLookCamera.LookAt = followTarget;
 
-            offset = new Vector3(offset.x, cameraHeight, offset.z);
-
-            transform.position = followTarget.position + offset;
+            offset = transform.position - followTarget.position;
         }
         else
         {
@@ -79,6 +76,9 @@ public class PlayerCameraController : MonoBehaviour
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
+
+            // Debug log to check mouse input values
+            Debug.Log("Mouse X: " + mouseX + ", Mouse Y: " + mouseY);
 
             // Invert the vertical rotation
             freeLookCamera.m_YAxis.Value -= mouseY * verticalSensitivity * Time.deltaTime * smoothing;

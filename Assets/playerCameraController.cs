@@ -21,8 +21,8 @@ public class PlayerCameraController : MonoBehaviour
 
     private bool isMouseLookEnabled = true;
 
-    private const float DefaultXRotation = 0.5f;
-    private const float DefaultYRotation = 0.5f;
+    private const float DefaultXRotation = 1.0f;
+    private const float DefaultYRotation = 1.0f;
 
     private void Start()
     {

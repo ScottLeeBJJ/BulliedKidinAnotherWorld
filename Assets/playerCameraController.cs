@@ -14,6 +14,7 @@ public class PlayerCameraController : MonoBehaviour
     public float smoothing = 5.0f;
     public float verticalLimit = 80.0f;
     public KeyCode resetKey = KeyCode.R;
+    public float cameraHeight = 3.0f;
 
     private CinemachineFreeLook freeLookCamera;
     private Transform followTarget;
@@ -40,7 +41,9 @@ public class PlayerCameraController : MonoBehaviour
             freeLookCamera.Follow = followTarget;
             freeLookCamera.LookAt = followTarget;
 
-            offset = transform.position - followTarget.position;
+            offset = new Vector3(offset.x, cameraHeight, offset.z);
+
+            transform.position = followTarget.position + offset;
         }
         else
         {

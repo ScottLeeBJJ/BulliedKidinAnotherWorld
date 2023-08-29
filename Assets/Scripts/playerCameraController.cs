@@ -110,3 +110,4 @@ public class PlayerCameraController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * smoothing);
     }
 }
+// Camera is not looking up or down correctly, must correct this before moving forward

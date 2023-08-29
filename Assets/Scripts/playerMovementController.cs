@@ -57,7 +57,8 @@ public class PlayerMovementController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
+        if (Input.GetButtonDown("Jump") && groundedPlayer) 
+        //This is not working, I need to figure out what is the hangup
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * DefaultJumpMultiplier * gravityValue);
         }
